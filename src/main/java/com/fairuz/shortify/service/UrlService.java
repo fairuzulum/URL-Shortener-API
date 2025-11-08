@@ -33,7 +33,7 @@ public class UrlService {
         urlRepository.save(url);
 
         String fullShortUrl = baseUrl + "/s/" + shortCode;
-        return new UrlResponse(fullShortUrl, request.getOriginalUrl());
+        return new UrlResponse(fullShortUrl, request.getOriginalUrl(), url.getCreatedAt(), url.getVisitCount());
     }
 
     public String getOriginalUrl(String shortCode) {
@@ -44,5 +44,13 @@ public class UrlService {
         urlRepository.save(url);
 
         return url.getOriginalUrl();
+    }
+
+    public UrlResponse getUrlInfo(String shortCode) {
+        Url url = urlRepository.findByShortCode(shortCode)
+                .orElseThrow(() -> new UrlNotFoundException("Short code not found: " + shortCode));
+
+        String fullShortUrl = baseUrl + "/s/" + shortCode;
+        return new UrlResponse(fullShortUrl, url.getOriginalUrl(), url.getCreatedAt(), url.getVisitCount());
     }
 }

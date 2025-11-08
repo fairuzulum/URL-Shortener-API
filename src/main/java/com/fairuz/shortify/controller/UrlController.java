@@ -28,4 +28,10 @@ public class UrlController {
         String originalUrl = urlService.getOriginalUrl(code);
         response.sendRedirect(originalUrl);
     }
+
+    @GetMapping("/api/info/{code}")
+    public ResponseEntity<UrlResponse> getUrlInfo(@PathVariable String code) {
+        UrlResponse response = urlService.getUrlInfo(code);
+        return ResponseEntity.ok(response);
+    }
 }
